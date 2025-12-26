@@ -1,0 +1,8 @@
+root = "../../"
+tmp_dir = "./tmp"
+
+[build]
+bin = "./bin/service01"
+cmd = "go build -o ./bin/service01 ./"
+exclude_dir = ["web", "tmp"]
+include_ext = ["go", "yaml"]

@@ -1,0 +1,22 @@
+http_server:
+  port: 8080
+  cors:
+    allow_origins:
+      - "*" # allow all origins, in production, you should set the allowed origins
+    allow_credentials: true
+
+logger:
+  level: debug
+  output_to_file:
+    enable: false
+    path: ""
+    with_buffer: false
+  add_caller: true
+
+component01:
+  field01: "test field01"
+  field02: "test field02"
+
+component02:
+  field01: "test field01"
+  field02: "test field02"

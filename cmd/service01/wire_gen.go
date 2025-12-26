@@ -8,26 +8,49 @@ package main
 
 import (
 	"context"
-	"github.com/gw-gong/template_project/internal/app/service01/router"
-	"github.com/gw-gong/template_project/internal/pkg/components/component01"
-	"github.com/gw-gong/template_project/internal/pkg/components/component02"
-	"github.com/gw-gong/template_project/internal/pkg/db/mysql"
+
+	"github.com/gw-gong/go-template-project/config/local_config/service01"
+	"github.com/gw-gong/go-template-project/internal/app/service01/router"
+	"github.com/gw-gong/go-template-project/internal/pkg/components/component01"
+	"github.com/gw-gong/go-template-project/internal/pkg/components/component02"
+	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 )
 
 // Injectors from wire.go:
 
-func InitHttpServer(ctx context.Context, component01erOptions component01.Component01erOptions, component02erOptions component02.Component02erOptions) (*httpServer, func(), error) {
-	component01er := component01.NewComponent01er(component01erOptions)
-	component02er, cleanup := component02.NewComponent02er(component02erOptions)
+func InitHttpServer(ctx context.Context, config *service01.Config) (*httpServer, func(), error) {
+	component01Options := config.Component01
+	component01Component01 := component01.NewComponent01(component01Options)
+	component02Options := config.Component02
+	component02Component02, cleanup := component02.NewComponent02(component02Options)
 	xxxDbManager := mysql.NewXxxDbManager()
 	apiRouter := &router.ApiRouter{
-		Component01er: component01er,
-		Component02er: component02er,
-		XxxDbManager:  xxxDbManager,
+		Component01:  component01Component01,
+		Component02:  component02Component02,
+		XxxDbManager: xxxDbManager,
+	}
+	appRouter := &router.AppRouter{
+		Component01:  component01Component01,
+		Component02:  component02Component02,
+		XxxDbManager: xxxDbManager,
+	}
+	portalRouter := &router.PortalRouter{
+		Component01:  component01Component01,
+		Component02:  component02Component02,
+		XxxDbManager: xxxDbManager,
+	}
+	privateRouter := &router.PrivateRouter{
+		Component01:  component01Component01,
+		Component02:  component02Component02,
+		XxxDbManager: xxxDbManager,
 	}
 	mainHttpServer := &httpServer{
-		ctx:       ctx,
-		apiRouter: apiRouter,
+		ctx:           ctx,
+		cfg:           config,
+		apiRouter:     apiRouter,
+		appRouter:     appRouter,
+		portalRouter:  portalRouter,
+		privateRouter: privateRouter,
 	}
 	return mainHttpServer, func() {
 		cleanup()

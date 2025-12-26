@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/gw-gong/template_project/api/http/service01/api"
-	"github.com/gw-gong/template_project/internal/pkg/components/component01"
+	"github.com/gw-gong/go-template-project/api/http/service01/api"
+	"github.com/gw-gong/go-template-project/internal/pkg/components/component01"
 
 	"github.com/gin-gonic/gin"
 	gwkit_res "github.com/gw-gong/gwkit-go/gin/response"
@@ -13,10 +13,10 @@ import (
 type TestHandler struct {
 	request     *api.TestRequest
 	response    *api.TestResponse
-	component01 component01.Component01er
+	component01 component01.Component01
 }
 
-func NewTestHandler(component01 component01.Component01er) gin.HandlerFunc {
+func NewTestHandler(component01 component01.Component01) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		handler := &TestHandler{
 			request:     &api.TestRequest{},

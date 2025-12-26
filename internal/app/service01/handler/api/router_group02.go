@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/gw-gong/template_project/api/http/service01/api"
-	"github.com/gw-gong/template_project/internal/pkg/components/component02"
-	"github.com/gw-gong/template_project/internal/pkg/db/mysql"
+	"github.com/gw-gong/go-template-project/api/http/service01/api"
+	"github.com/gw-gong/go-template-project/internal/pkg/components/component02"
+	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 
 	"github.com/gin-gonic/gin"
 	gwkit_res "github.com/gw-gong/gwkit-go/gin/response"
@@ -13,11 +13,11 @@ import (
 type TestxHandler struct {
 	request      *api.TestxRequest
 	response     *api.TestxResponse
-	component02  component02.Component02er
+	component02  component02.Component02
 	xxxDbManager mysql.XxxDbManager
 }
 
-func NewTestxHandler(component02 component02.Component02er, xxxDbManager mysql.XxxDbManager) gin.HandlerFunc {
+func NewTestxHandler(component02 component02.Component02, xxxDbManager mysql.XxxDbManager) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		handler := &TestxHandler{
 			request:      &api.TestxRequest{},

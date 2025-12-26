@@ -1,7 +1,7 @@
-package app
+package private
 
 import (
-	"github.com/gw-gong/go-template-project/api/http/service01/app"
+	"github.com/gw-gong/go-template-project/api/http/service01/private"
 	"github.com/gw-gong/go-template-project/internal/pkg/components/component01"
 
 	"github.com/gin-gonic/gin"
@@ -11,16 +11,16 @@ import (
 )
 
 type TestHandler struct {
-	request     *app.TestRequest
-	response    *app.TestResponse
+	request     *private.TestRequest
+	response    *private.TestResponse
 	component01 component01.Component01
 }
 
 func NewTestHandler(component01 component01.Component01) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		handler := &TestHandler{
-			request:     &app.TestRequest{},
-			response:    &app.TestResponse{},
+			request:     &private.TestRequest{},
+			response:    &private.TestResponse{},
 			component01: component01,
 		}
 		if err := c.ShouldBindJSON(handler.request); err != nil {

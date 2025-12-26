@@ -1,14 +1,14 @@
-package api
+package private
 
 // ==============================================================
-// POST /api/router_group01/test
+// POST /private/router_group02/testx
 // ==============================================================
 
-type TestRequest struct {
+type TestxRequest struct {
 	Field01 string `json:"field01" binding:"required"`
 	Field02 string `json:"field02" binding:"required"`
 }
 
-type TestResponse struct {
+type TestxResponse struct {
 	Field01 string `json:"field01"`
 }

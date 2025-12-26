@@ -1,7 +1,7 @@
-package app
+package private
 
 import (
-	"github.com/gw-gong/go-template-project/api/http/service01/app"
+	"github.com/gw-gong/go-template-project/api/http/service01/private"
 	"github.com/gw-gong/go-template-project/internal/pkg/components/component02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 
@@ -11,8 +11,8 @@ import (
 )
 
 type TestxHandler struct {
-	request      *app.TestxRequest
-	response     *app.TestxResponse
+	request      *private.TestxRequest
+	response     *private.TestxResponse
 	component02  component02.Component02
 	xxxDbManager mysql.XxxDbManager
 }
@@ -20,8 +20,8 @@ type TestxHandler struct {
 func NewTestxHandler(component02 component02.Component02, xxxDbManager mysql.XxxDbManager) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		handler := &TestxHandler{
-			request:      &app.TestxRequest{},
-			response:     &app.TestxResponse{},
+			request:      &private.TestxRequest{},
+			response:     &private.TestxResponse{},
 			component02:  component02,
 			xxxDbManager: xxxDbManager,
 		}

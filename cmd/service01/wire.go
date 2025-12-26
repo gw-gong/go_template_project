@@ -11,22 +11,25 @@ import (
 	"context"
 
 	"github.com/google/wire"
-	"github.com/gw-gong/template_project/internal/app/service01/router"
-	"github.com/gw-gong/template_project/internal/pkg/components/component01"
-	"github.com/gw-gong/template_project/internal/pkg/components/component02"
-	"github.com/gw-gong/template_project/internal/pkg/db/mysql"
+	local_cfg "github.com/gw-gong/go-template-project/config/local_config/service01"
+	"github.com/gw-gong/go-template-project/internal/app/service01/router"
+	"github.com/gw-gong/go-template-project/internal/pkg/components/component01"
+	"github.com/gw-gong/go-template-project/internal/pkg/components/component02"
+	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 )
 
-func InitHttpServer(
-	ctx context.Context,
-	component01erOptions component01.Component01erOptions,
-	component02erOptions component02.Component02erOptions,
-) (*httpServer, func(), error) {
+func InitHttpServer(ctx context.Context, config *local_cfg.Config) (*httpServer, func(), error) {
 	wire.Build(
-		component01.NewComponent01er,
-		component02.NewComponent02er,
+		wire.FieldsOf(new(*local_cfg.Config),
+			"Component01",
+			"Component02"),
+		component01.NewComponent01,
+		component02.NewComponent02,
 		mysql.NewXxxDbManager,
 		wire.Struct(new(router.ApiRouter), "*"),
+		wire.Struct(new(router.AppRouter), "*"),
+		wire.Struct(new(router.PortalRouter), "*"),
+		wire.Struct(new(router.PrivateRouter), "*"),
 		wire.Struct(new(httpServer), "*"),
 	)
 	return nil, nil, nil

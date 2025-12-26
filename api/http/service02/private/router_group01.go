@@ -1,7 +1,7 @@
-package api
+package private
 
 // ==============================================================
-// POST /api/router_group01/test
+// POST /private/router_group01/test
 // ==============================================================
 
 type TestRequest struct {
