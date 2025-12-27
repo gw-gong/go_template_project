@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/gw-gong/go-template-project/internal/app/svc01/handlertest"
+	"github.com/gw-gong/go-template-project/internal/app/svc01/handler/test"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz01"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
@@ -21,11 +21,11 @@ func (r *PrivateRouter) Bind(router *gin.Engine) {
 
 	group01 := privateGroup.Group("/group01")
 	{
-		group01.POST("/test", handlertest.NewTest01PrivateHandler(r.Biz01))
+		group01.POST("/test", test.NewTest01PrivateHandler(r.Biz01))
 	}
 
 	group02 := privateGroup.Group("/group02")
 	{
-		group02.POST("/testx", handlertest.NewTest02PrivateHandler(r.Biz02, r.Test01DbManager, r.Test02DbManager))
+		group02.POST("/testx", test.NewTest02PrivateHandler(r.Biz02, r.Test01DbManager, r.Test02DbManager))
 	}
 }

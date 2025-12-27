@@ -33,6 +33,7 @@ func (s *HttpServer) Run(ctx context.Context) {
 	s.portalRouter.Bind(router)
 	s.privateRouter.Bind(router)
 
+	// start http server
 	log.Infoc(ctx, "http server running", log.Int("port", s.cfg.HttpServer.Port))
 	util.ExitOnErr(ctx, router.Run(fmt.Sprintf(":%d", s.cfg.HttpServer.Port)))
 }
