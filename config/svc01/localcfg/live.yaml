@@ -1,0 +1,29 @@
+env: live
+
+http_server:
+  port: 8080
+
+consul_net_cfg:
+  consul_addr: "127.0.0.1:8500"
+  consul_key: "config/svc01/live.yaml"
+  config_type: "yaml"
+  reload_time: 10
+
+logger:
+  level: info
+  output_to_file:
+    enable: true
+    path:
+    with_buffer: false
+
+log_http_info:
+  log_request_body: true
+  log_response_body: true
+
+biz01:
+  field01: "value01"
+  field02: "value02"
+
+biz02:
+  field01: "value01"
+  field02: "value02"

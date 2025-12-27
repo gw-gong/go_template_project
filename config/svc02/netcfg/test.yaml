@@ -1,0 +1,23 @@
+env: test
+
+http_server:
+  port: 8080
+
+logger:
+  level: debug
+  output_to_file:
+    enable: false
+    path: ""
+    with_buffer: false
+
+log_http_info:
+  log_request_body: true
+  log_response_body: true
+
+biz01:
+  field01: "value01"
+  field02: "value02"
+
+biz02:
+  field01: "value01"
+  field02: "value02"
