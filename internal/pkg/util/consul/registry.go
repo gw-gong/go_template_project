@@ -1,4 +1,4 @@
-package svc
+package consul
 
 import (
 	"fmt"
