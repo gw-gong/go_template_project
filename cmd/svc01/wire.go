@@ -13,6 +13,7 @@ import (
 	"github.com/gw-gong/go-template-project/internal/config/svc01/netcfg"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz01"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
+	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 
 	"github.com/google/wire"
@@ -24,6 +25,8 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 			new(*localcfg.Config),
 			"Biz01",
 			"Biz02",
+			"Test01Client",
+			"Test02Client",
 		),
 		wire.FieldsOf(
 			new(*netcfg.Config),
@@ -34,6 +37,8 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 		biz02.NewBiz02,
 		mysql.NewTest01DbManager,
 		mysql.NewTest02DbManager,
+		svc02.NewTest01Client,
+		svc02.NewTest02Client,
 		wire.Struct(new(router.ApiRouter), "*"),
 		wire.Struct(new(router.AppRouter), "*"),
 		wire.Struct(new(router.PortalRouter), "*"),

@@ -27,3 +27,13 @@ biz01:
 biz02:
   field01: "value01"
   field02: "value02"
+
+test01_client:
+  agent_addr: "127.0.0.1:8500"
+  service_name: "test01"
+  tag: "test"
+
+test02_client:
+  agent_addr: "127.0.0.1:8500"
+  service_name: "test02"
+  tag: "test"

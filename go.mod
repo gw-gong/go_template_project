@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/google/wire v0.6.0
-	github.com/gw-gong/gwkit-go v0.4.1-0.20251227173133-f0ff881d00c8
+	github.com/gw-gong/gwkit-go v0.4.1-0.20251227184734-e96bddaefde6
 	google.golang.org/grpc v1.71.1
 	google.golang.org/protobuf v1.36.6
 )

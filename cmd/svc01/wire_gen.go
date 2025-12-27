@@ -12,6 +12,7 @@ import (
 	"github.com/gw-gong/go-template-project/internal/config/svc01/netcfg"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz01"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
+	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 )
 
@@ -34,11 +35,25 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 		cleanup()
 		return nil, nil, err
 	}
+	test01ClientOption := config.Test01Client
+	test01Client, err := svc02.NewTest01Client(test01ClientOption)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	test02ClientOption := config.Test02Client
+	test02Client, err := svc02.NewTest02Client(test02ClientOption)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
 	apiRouter := &router.ApiRouter{
 		Biz01:           biz01Biz01,
 		Biz02:           biz02Biz02,
 		Test01DbManager: test01DbManager,
 		Test02DbManager: test02DbManager,
+		Test01Client:    test01Client,
+		Test02Client:    test02Client,
 	}
 	appRouter := &router.AppRouter{
 		Biz01:           biz01Biz01,

@@ -10,6 +10,7 @@ import (
 	"github.com/gw-gong/go-template-project/internal/app/svc01/errcode"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz01"
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
+	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 
 	"github.com/gin-gonic/gin"
@@ -55,9 +56,11 @@ type Test02ApiHandler struct {
 	Biz02           biz02.Biz02
 	Test01DbManager mysql.Test01DbManager
 	Test02DbManager mysql.Test02DbManager
+	Test01Client    *svc02.Test01Client
+	Test02Client    *svc02.Test02Client
 }
 
-func NewTest02ApiHandler(biz02 biz02.Biz02, test01DbManager mysql.Test01DbManager, test02DbManager mysql.Test02DbManager) gin.HandlerFunc {
+func NewTest02ApiHandler(biz02 biz02.Biz02, test01DbManager mysql.Test01DbManager, test02DbManager mysql.Test02DbManager, test01Client *svc02.Test01Client, test02Client *svc02.Test02Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		handler := &Test02ApiHandler{
 			ctx:             c.Request.Context(),
@@ -66,6 +69,8 @@ func NewTest02ApiHandler(biz02 biz02.Biz02, test01DbManager mysql.Test01DbManage
 			Biz02:           biz02,
 			Test01DbManager: test01DbManager,
 			Test02DbManager: test02DbManager,
+			Test01Client:    test01Client,
+			Test02Client:    test02Client,
 		}
 		if err := c.ShouldBindJSON(handler.request); err != nil {
 			fmtErr := validator.FmtValidationErrors(err, handler.request)
@@ -81,6 +86,18 @@ func (h *Test02ApiHandler) handle(c *gin.Context) {
 	h.Biz02.Function01(h.ctx)
 	h.Test01DbManager.Setxxxx(h.ctx)
 	h.Test02DbManager.Setxxxx(h.ctx)
+	resField01, resField02, err := h.Test01Client.TestFunc(h.ctx, h.request.Field01, h.request.Field02)
+	if err != nil {
+		res.ResponseError(c, errcode.ErrCodeInternalServerError, res.WithErrDetail(err))
+		return
+	}
+	log.Infoc(h.ctx, "Test01Client.TestFunc", log.Str("resField01", resField01), log.Str("resField02", resField02))
+	resField01, resField02, err = h.Test02Client.TestFunc(h.ctx, h.request.Field01, h.request.Field02)
+	if err != nil {
+		res.ResponseError(c, errcode.ErrCodeInternalServerError, res.WithErrDetail(err))
+		return
+	}
+	log.Infoc(h.ctx, "Test02Client.TestFunc", log.Str("resField01", resField01), log.Str("resField02", resField02))
 	res.ResponseSuccess(c, nil)
 }
 
