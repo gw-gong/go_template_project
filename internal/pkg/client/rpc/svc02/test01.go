@@ -10,18 +10,18 @@ import (
 	"github.com/gw-gong/gwkit-go/grpc/consul"
 )
 
-type Test01ClientOption consul.HealthyGrpcConnOption
+type Test01ClientOption consul.HealthyGrpcConnEntry
 
 type Test01Client struct {
 	svc02.Test01ServiceClient
 }
 
-func NewTest01Client(option *Test01ClientOption) (*Test01Client, error) {
+func NewTest01Client(consulClient consul.ConsulClient, option *Test01ClientOption) (*Test01Client, error) {
 	if option == nil {
 		return nil, errors.New("option is nil")
 	}
 
-	conn, err := consul.NewHealthyGrpcConn((*consul.HealthyGrpcConnOption)(option))
+	conn, err := consulClient.GetHealthyGrpcConn((*consul.HealthyGrpcConnEntry)(option))
 	if err != nil {
 		return nil, err
 	}

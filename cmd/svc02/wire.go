@@ -12,11 +12,17 @@ import (
 	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test01"
 	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test02"
 
+	"github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/google/wire"
 )
 
 func InitRpcServer(config *localcfg.Config) (*RpcServer, func(), error) {
 	wire.Build(
+		wire.FieldsOf(
+			new(*localcfg.Config),
+			"ConsulAgentAddr",
+		),
+		consul.NewConsulClient,
 		test01.NewTest01Svc,
 		test02.NewTest02Svc,
 		wire.Struct(new(RpcServer), "*"),

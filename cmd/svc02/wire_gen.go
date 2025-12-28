@@ -10,17 +10,24 @@ import (
 	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test01"
 	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test02"
 	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
+	"github.com/gw-gong/gwkit-go/grpc/consul"
 )
 
 // Injectors from wire.go:
 
 func InitRpcServer(config *localcfg.Config) (*RpcServer, func(), error) {
+	agentAddr := config.ConsulAgentAddr
+	consulClient, err := consul.NewConsulClient(agentAddr)
+	if err != nil {
+		return nil, nil, err
+	}
 	test01Svc := test01.NewTest01Svc()
 	test02Svc := test02.NewTest02Svc()
 	rpcServer := &RpcServer{
-		cfg:       config,
-		test01Svc: test01Svc,
-		test02Svc: test02Svc,
+		cfg:          config,
+		consulClient: consulClient,
+		test01Svc:    test01Svc,
+		test02Svc:    test02Svc,
 	}
 	return rpcServer, func() {
 	}, nil

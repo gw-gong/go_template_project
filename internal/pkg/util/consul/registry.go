@@ -3,32 +3,22 @@ package consul
 import (
 	"fmt"
 
-	"github.com/gw-gong/go-template-project/internal/config/types"
-
 	"github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/gw-gong/gwkit-go/log"
-	"github.com/gw-gong/gwkit-go/util/str"
 )
 
-func RegisterServices(serviceConfigs []*types.ServiceConfig, port int) (func(), error) {
-	serviceRegistryMap := make(map[string]consul.ConsulRegistry, len(serviceConfigs))
-	for _, serviceConfig := range serviceConfigs {
-		serviceRegistry, err := consul.NewConsulRegistry(serviceConfig.ServiceName)
+func RegisterServices(consulClient consul.ConsulClient, registerEntries []*consul.RegisterEntry, port int) (func(), error) {
+	serviceIDs := make([]string, 0, len(registerEntries))
+	for _, registerEntry := range registerEntries {
+		err := consulClient.Register(registerEntry, port, false)
 		if err != nil {
-			return nil, fmt.Errorf("new consul registry failed: %w, serviceName: %s", err, serviceConfig.ServiceName)
+			return nil, fmt.Errorf("register service failed: %w, serviceName: %s", err, registerEntry.ServiceName)
 		}
-
-		serviceID := str.GenerateUUID()
-		err = serviceRegistry.Register(serviceID, port, serviceConfig.Tags)
-		if err != nil {
-			return nil, fmt.Errorf("register service failed: %w, serviceName: %s, serviceID: %s", err, serviceConfig.ServiceName, serviceID)
-		}
-
-		serviceRegistryMap[serviceID] = serviceRegistry
+		serviceIDs = append(serviceIDs, registerEntry.ServiceID)
 	}
 	return func() {
-		for serviceID, serviceRegistry := range serviceRegistryMap {
-			err := serviceRegistry.Deregister(serviceID)
+		for _, serviceID := range serviceIDs {
+			err := consulClient.Deregister(serviceID)
 			if err != nil {
 				log.Error("deregister service failed", log.Err(err), log.Str("serviceID", serviceID))
 			}

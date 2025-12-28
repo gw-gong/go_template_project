@@ -9,7 +9,9 @@ import (
 	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test01"
 	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test02"
 	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
+	"github.com/gw-gong/go-template-project/internal/pkg/util/consul"
 
+	gwkitconsul "github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/gw-gong/gwkit-go/grpc/interceptor/server/unary"
 	"github.com/gw-gong/gwkit-go/log"
 	"github.com/gw-gong/gwkit-go/util"
@@ -19,12 +21,19 @@ import (
 )
 
 type RpcServer struct {
-	cfg       *localcfg.Config
-	test01Svc *test01.Test01Svc
-	test02Svc *test02.Test02Svc
+	cfg          *localcfg.Config
+	consulClient gwkitconsul.ConsulClient
+	test01Svc    *test01.Test01Svc
+	test02Svc    *test02.Test02Svc
 }
 
 func (s *RpcServer) Run(ctx context.Context) {
+	// register services
+	deregister, err := consul.RegisterServices(s.consulClient, s.cfg.RpcServer.RegisterEntries, s.cfg.RpcServer.Port)
+	util.ExitOnErr(ctx, err)
+	defer deregister()
+
+	// init grpc server
 	grpcServer := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			unary.PanicRecoverInterceptor(),

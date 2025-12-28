@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
-	"github.com/gw-gong/go-template-project/internal/pkg/util/consul"
 
 	"github.com/gw-gong/gwkit-go/hotcfg"
 	"github.com/gw-gong/gwkit-go/log"
@@ -36,11 +35,6 @@ func main() {
 
 	// start hot reload
 	util.ExitOnErr(ctx, hlm.Watch())
-
-	// register services
-	deregister, err := consul.RegisterServices(localCfg.RpcServer.Services, localCfg.RpcServer.Port)
-	util.ExitOnErr(ctx, err)
-	defer deregister()
 
 	// init & run rpc server
 	rpcServer, close, err := InitRpcServer(localCfg)

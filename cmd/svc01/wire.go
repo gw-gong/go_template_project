@@ -16,6 +16,7 @@ import (
 	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
 
+	"github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/google/wire"
 )
 
@@ -23,6 +24,7 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 	wire.Build(
 		wire.FieldsOf(
 			new(*localcfg.Config),
+			"ConsulAgentAddr",
 			"Biz01",
 			"Biz02",
 			"Test01Client",
@@ -33,6 +35,7 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 			"Test01DbManager",
 			"Test02DbManager",
 		),
+		consul.NewConsulClient,
 		biz01.NewBiz01,
 		biz02.NewBiz02,
 		mysql.NewTest01DbManager,

@@ -14,6 +14,7 @@ import (
 	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
 	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
+	"github.com/gw-gong/gwkit-go/grpc/consul"
 )
 
 // Injectors from wire.go:
@@ -35,14 +36,20 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 		cleanup()
 		return nil, nil, err
 	}
+	agentAddr := config.ConsulAgentAddr
+	consulClient, err := consul.NewConsulClient(agentAddr)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
 	test01ClientOption := config.Test01Client
-	test01Client, err := svc02.NewTest01Client(test01ClientOption)
+	test01Client, err := svc02.NewTest01Client(consulClient, test01ClientOption)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
 	test02ClientOption := config.Test02Client
-	test02Client, err := svc02.NewTest02Client(test02ClientOption)
+	test02Client, err := svc02.NewTest02Client(consulClient, test02ClientOption)
 	if err != nil {
 		cleanup()
 		return nil, nil, err

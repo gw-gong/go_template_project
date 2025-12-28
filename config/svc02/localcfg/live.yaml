@@ -8,6 +8,8 @@ rpc_server:
     - service_name: "test02"
       tags: ["live"]
 
+consul_agent_addr: "127.0.0.1:8500"
+
 logger:
   level: info
   output_to_file:

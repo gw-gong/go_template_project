@@ -2,11 +2,13 @@ env: test
 
 rpc_server:
   port: 8081
-  services:
+  register_entries:
     - service_name: "test01"
       tags: ["test"]
     - service_name: "test02"
       tags: ["test"]
+
+consul_agent_addr: "127.0.0.1:8500"
 
 logger:
   level: debug
