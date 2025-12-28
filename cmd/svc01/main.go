@@ -18,11 +18,7 @@ func main() {
 	util.ExitOnErr(ctx, err)
 
 	// load local config
-	localCfg, err := localcfg.NewConfig(&hotcfg.LocalConfigOption{
-		FilePath: cfgPath,
-		FileName: cfgFileName,
-		FileType: "yaml",
-	})
+	localCfg, err := localcfg.NewConfig(cfgPath, cfgFileName)
 	util.ExitOnErr(ctx, err)
 	util.ExitOnErr(ctx, hlm.RegisterHotLoader(localCfg))
 

@@ -53,8 +53,12 @@ func (c *Config) LoadConfig() {
 	log.Info("LoadConfig", log.Any("config", c))
 }
 
-func NewConfig(localConfigOption *hotcfg.LocalConfigOption) (config *Config, err error) {
+func NewConfig(cfgPath string, cfgFileName string) (config *Config, err error) {
 	config = &Config{}
-	config.BaseConfigCapable, err = hotcfg.NewLocalBaseConfigCapable(localConfigOption)
+	config.BaseConfigCapable, err = hotcfg.NewLocalBaseConfigCapable(&hotcfg.LocalConfigOption{
+		FilePath: cfgPath,
+		FileName: cfgFileName,
+		FileType: "yaml",
+	})
 	return config, err
 }
