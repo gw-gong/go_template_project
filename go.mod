@@ -1,6 +1,6 @@
 module github.com/gw-gong/go-template-project
 
-go 1.24.0
+go 1.23.2
 
 require (
 	github.com/gin-gonic/gin v1.10.1
