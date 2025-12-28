@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = ".;svc02";
+
+service Test01Service {
+  rpc TestFunc(Test01Request) returns (Test01Response) {}
+}
+
+message Test01Request {
+  string field01 = 1;
+  string field02 = 2;
+}
+
+message Test01Response {
+  string field01 = 1;
+  string field02 = 2;
+}
+
+service Test02Service {
+  rpc TestFunc(Test02Request) returns (Test02Response) {}
+}
+  
+message Test02Request {
+  string field01 = 1;
+  string field02 = 2;
+}
+
+message Test02Response {
+  string field01 = 1;
+  string field02 = 2;
+}

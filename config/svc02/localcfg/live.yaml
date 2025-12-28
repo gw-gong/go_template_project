@@ -1,0 +1,18 @@
+env: live
+
+rpc_server:
+  port: 8081
+  services:
+    - service_name: "test01"
+      tags: ["live"]
+    - service_name: "test02"
+      tags: ["live"]
+
+consul_agent_addr: "127.0.0.1:8500"
+
+logger:
+  level: info
+  output_to_file:
+    enable: true
+    path:
+    with_buffer: false

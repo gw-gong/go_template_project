@@ -3,3 +3,7 @@
 .DS_Store
 
 **/bin
+**/tmp
+**/logs
+**/node_modules
+**/vendor
