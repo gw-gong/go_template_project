@@ -1,7 +1,7 @@
 package localcfg
 
 import (
-	"github.com/gw-gong/go-template-project/internal/config/types"
+	"github.com/gw-gong/boilerplate-go/internal/config/types"
 
 	"github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/gw-gong/gwkit-go/hotcfg"

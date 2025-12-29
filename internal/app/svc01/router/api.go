@@ -1,11 +1,11 @@
 package router
 
 import (
-	"github.com/gw-gong/go-template-project/internal/app/svc01/handler/test"
-	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz01"
-	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
-	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
-	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc01/handler/test"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/biz/biz01"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/biz/biz02"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/client/rpc/svc02"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/db/mysql"
 
 	"github.com/gin-gonic/gin"
 )

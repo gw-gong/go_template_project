@@ -1,7 +1,7 @@
 package netcfg
 
 import (
-	"github.com/gw-gong/go-template-project/internal/pkg/db/mysql"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/db/mysql"
 
 	"github.com/gw-gong/gwkit-go/hotcfg"
 	"github.com/gw-gong/gwkit-go/log"

@@ -8,12 +8,12 @@ package main
 //go:generate go run github.com/google/wire/cmd/wire
 
 import (
-	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
-	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test01"
-	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test02"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc02/svc/test01"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc02/svc/test02"
+	"github.com/gw-gong/boilerplate-go/internal/config/svc02/localcfg"
 
-	"github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/google/wire"
+	"github.com/gw-gong/gwkit-go/grpc/consul"
 )
 
 func InitRpcServer(config *localcfg.Config) (*RpcServer, func(), error) {

@@ -1,4 +1,4 @@
-module github.com/gw-gong/go-template-project
+module github.com/gw-gong/boilerplate-go
 
 go 1.23.2
 

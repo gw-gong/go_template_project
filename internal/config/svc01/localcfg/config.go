@@ -1,10 +1,10 @@
 package localcfg
 
 import (
-	"github.com/gw-gong/go-template-project/internal/config/types"
-	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz01"
-	"github.com/gw-gong/go-template-project/internal/pkg/biz/biz02"
-	"github.com/gw-gong/go-template-project/internal/pkg/client/rpc/svc02"
+	"github.com/gw-gong/boilerplate-go/internal/config/types"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/biz/biz01"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/biz/biz02"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/client/rpc/svc02"
 
 	"github.com/gw-gong/gwkit-go/gin/middleware"
 	"github.com/gw-gong/gwkit-go/grpc/consul"

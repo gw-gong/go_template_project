@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/gw-gong/go-template-project/api/rpc/svc02"
+	"github.com/gw-gong/boilerplate-go/api/rpc/svc02"
 
 	"github.com/gw-gong/gwkit-go/grpc/consul"
 )

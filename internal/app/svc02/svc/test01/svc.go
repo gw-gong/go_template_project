@@ -3,7 +3,7 @@ package test01
 import (
 	"context"
 
-	"github.com/gw-gong/go-template-project/api/rpc/svc02"
+	"github.com/gw-gong/boilerplate-go/api/rpc/svc02"
 
 	"github.com/gw-gong/gwkit-go/log"
 )

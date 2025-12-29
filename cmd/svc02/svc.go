@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/gw-gong/go-template-project/api/rpc/svc02"
-	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test01"
-	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test02"
-	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
-	"github.com/gw-gong/go-template-project/internal/pkg/util/consul"
+	"github.com/gw-gong/boilerplate-go/api/rpc/svc02"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc02/svc/test01"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc02/svc/test02"
+	"github.com/gw-gong/boilerplate-go/internal/config/svc02/localcfg"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/util/consul"
 
 	gwkitconsul "github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/gw-gong/gwkit-go/grpc/interceptor/server/unary"

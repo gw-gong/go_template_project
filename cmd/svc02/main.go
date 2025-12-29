@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
+	"github.com/gw-gong/boilerplate-go/internal/config/svc02/localcfg"
 
 	"github.com/gw-gong/gwkit-go/hotcfg"
 	"github.com/gw-gong/gwkit-go/log"

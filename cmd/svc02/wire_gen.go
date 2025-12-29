@@ -7,9 +7,9 @@
 package main
 
 import (
-	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test01"
-	"github.com/gw-gong/go-template-project/internal/app/svc02/svc/test02"
-	"github.com/gw-gong/go-template-project/internal/config/svc02/localcfg"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc02/svc/test01"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc02/svc/test02"
+	"github.com/gw-gong/boilerplate-go/internal/config/svc02/localcfg"
 	"github.com/gw-gong/gwkit-go/grpc/consul"
 )
 

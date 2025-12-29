@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gw-gong/go-template-project/internal/app/svc01/router"
-	"github.com/gw-gong/go-template-project/internal/config/svc01/localcfg"
-	"github.com/gw-gong/go-template-project/internal/config/svc01/netcfg"
+	"github.com/gw-gong/boilerplate-go/internal/app/svc01/router"
+	"github.com/gw-gong/boilerplate-go/internal/config/svc01/localcfg"
+	"github.com/gw-gong/boilerplate-go/internal/config/svc01/netcfg"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gw-gong/gwkit-go/gin/middleware"
