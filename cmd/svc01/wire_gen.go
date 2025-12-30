@@ -7,6 +7,7 @@
 package main
 
 import (
+	"github.com/google/wire"
 	"github.com/gw-gong/boilerplate-go/internal/app/svc01/router"
 	"github.com/gw-gong/boilerplate-go/internal/config/svc01/localcfg"
 	"github.com/gw-gong/boilerplate-go/internal/config/svc01/netcfg"
@@ -14,23 +15,36 @@ import (
 	"github.com/gw-gong/boilerplate-go/internal/pkg/biz/biz02"
 	"github.com/gw-gong/boilerplate-go/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/boilerplate-go/internal/pkg/db/mysql"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/util/provider"
 	"github.com/gw-gong/gwkit-go/grpc/consul"
+	"github.com/gw-gong/gwkit-go/hotcfg"
 )
 
 // Injectors from wire.go:
 
-func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer, func(), error) {
+func InitHttpServer(cfgOption *hotcfg.LocalConfigOption) (*HttpServer, func(), error) {
+	config, err := localcfg.NewConfig(cfgOption)
+	if err != nil {
+		return nil, nil, err
+	}
+	consulConfigOption := config.ConsulNetCfg
+	netcfgConfig, err := netcfg.NewConfig(consulConfigOption)
+	if err != nil {
+		return nil, nil, err
+	}
+	hotLoaderManager := hotcfg.NewHotLoaderManager()
+	engine := provider.NewGinEngine()
 	biz01Options := config.Biz01
 	biz01Biz01 := biz01.NewBiz01(biz01Options)
 	biz02Options := config.Biz02
 	biz02Biz02, cleanup := biz02.NewBiz02(biz02Options)
-	test01DbManagerOptions := netCfg.Test01DbManager
+	test01DbManagerOptions := netcfgConfig.Test01DbManager
 	test01DbManager, err := mysql.NewTest01DbManager(test01DbManagerOptions)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	test02DbManagerOptions := netCfg.Test02DbManager
+	test02DbManagerOptions := netcfgConfig.Test02DbManager
 	test02DbManager, err := mysql.NewTest02DbManager(test02DbManagerOptions)
 	if err != nil {
 		cleanup()
@@ -81,8 +95,10 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 		Test02DbManager: test02DbManager,
 	}
 	httpServer := &HttpServer{
-		cfg:           config,
-		netCfg:        netCfg,
+		localCfg:      config,
+		netCfg:        netcfgConfig,
+		hlm:           hotLoaderManager,
+		router:        engine,
 		apiRouter:     apiRouter,
 		appRouter:     appRouter,
 		portalRouter:  portalRouter,
@@ -92,3 +108,28 @@ func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer
 		cleanup()
 	}, nil
 }
+
+// wire.go:
+
+var ConfigSet = wire.NewSet(localcfg.NewConfig, wire.FieldsOf(
+	new(*localcfg.Config),
+	"ConsulAgentAddr",
+	"ConsulNetCfg",
+	"Biz01",
+	"Biz02",
+	"Test01Client",
+	"Test02Client",
+), netcfg.NewConfig, wire.FieldsOf(
+	new(*netcfg.Config),
+	"Test01DbManager",
+	"Test02DbManager",
+), hotcfg.NewHotLoaderManager,
+)
+
+var InfraSet = wire.NewSet(provider.NewGinEngine, mysql.NewTest01DbManager, mysql.NewTest02DbManager, consul.NewConsulClient, svc02.NewTest01Client, svc02.NewTest02Client)
+
+var BizSet = wire.NewSet(biz01.NewBiz01, biz02.NewBiz02)
+
+var RouterSet = wire.NewSet(wire.Struct(new(router.ApiRouter), "*"), wire.Struct(new(router.AppRouter), "*"), wire.Struct(new(router.PortalRouter), "*"), wire.Struct(new(router.PrivateRouter), "*"))
+
+var HttpServerSet = wire.NewSet(wire.Struct(new(HttpServer), "*"))

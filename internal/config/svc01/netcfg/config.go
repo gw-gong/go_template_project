@@ -25,5 +25,6 @@ func (c *Config) LoadConfig() {
 func NewConfig(consulConfigOption *hotcfg.ConsulConfigOption) (config *Config, err error) {
 	config = &Config{}
 	config.BaseConfigCapable, err = hotcfg.NewConsulBaseConfigCapable(consulConfigOption)
+	config.LoadConfig()
 	return config, err
 }

@@ -4,5 +4,5 @@ tmp_dir = "./tmp"
 [build]
 bin = "./bin/svc01"
 cmd = "go build -o ./bin/svc01 ./"
-exclude_dir = ["web", "tmp", "bin"]
+exclude_dir = ["web", "tmp", "bin", "vendor"]
 include_ext = ["go", "mod", "sum"]

@@ -13,7 +13,9 @@ import (
 
 	gwkitconsul "github.com/gw-gong/gwkit-go/grpc/consul"
 	"github.com/gw-gong/gwkit-go/grpc/interceptor/server/unary"
+	"github.com/gw-gong/gwkit-go/hotcfg"
 	"github.com/gw-gong/gwkit-go/log"
+	"github.com/gw-gong/gwkit-go/setting"
 	"github.com/gw-gong/gwkit-go/util"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -22,12 +24,24 @@ import (
 
 type RpcServer struct {
 	cfg          *localcfg.Config
+	hlm          hotcfg.HotLoaderManager
 	consulClient gwkitconsul.ConsulClient
 	test01Svc    *test01.Test01Svc
 	test02Svc    *test02.Test02Svc
 }
 
-func (s *RpcServer) Run(ctx context.Context) {
+func (s *RpcServer) SetupAndRun(ctx context.Context) {
+	setting.SetEnv(s.cfg.Env)
+
+	// init global logger
+	syncFn, err := log.InitGlobalLogger(s.cfg.Logger)
+	util.ExitOnErr(ctx, err)
+	defer syncFn()
+
+	// start hot reload
+	util.ExitOnErr(ctx, s.hlm.RegisterHotLoader(s.cfg))
+	util.ExitOnErr(ctx, s.hlm.Watch())
+
 	// register services
 	deregister, err := consul.RegisterServices(s.consulClient, s.cfg.RpcServer.RegisterEntries, s.cfg.RpcServer.Port)
 	util.ExitOnErr(ctx, err)

@@ -14,18 +14,37 @@ import (
 
 	"github.com/google/wire"
 	"github.com/gw-gong/gwkit-go/grpc/consul"
+	"github.com/gw-gong/gwkit-go/hotcfg"
 )
 
-func InitRpcServer(config *localcfg.Config) (*RpcServer, func(), error) {
+var ConfigSet = wire.NewSet(
+	localcfg.NewConfig,
+	wire.FieldsOf(
+		new(*localcfg.Config),
+		"ConsulAgentAddr",
+	),
+	hotcfg.NewHotLoaderManager,
+)
+
+var InfraSet = wire.NewSet(
+	consul.NewConsulClient,
+)
+
+var BizSet = wire.NewSet(
+	test01.NewTest01Svc,
+	test02.NewTest02Svc,
+)
+
+var RpcServerSet = wire.NewSet(
+	wire.Struct(new(RpcServer), "*"),
+)
+
+func InitRpcServer(cfgOption *hotcfg.LocalConfigOption) (*RpcServer, func(), error) {
 	wire.Build(
-		wire.FieldsOf(
-			new(*localcfg.Config),
-			"ConsulAgentAddr",
-		),
-		consul.NewConsulClient,
-		test01.NewTest01Svc,
-		test02.NewTest02Svc,
-		wire.Struct(new(RpcServer), "*"),
+		ConfigSet,
+		InfraSet,
+		BizSet,
+		RpcServerSet,
 	)
 	return nil, nil, nil
 }

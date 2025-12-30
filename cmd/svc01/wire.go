@@ -15,38 +15,65 @@ import (
 	"github.com/gw-gong/boilerplate-go/internal/pkg/biz/biz02"
 	"github.com/gw-gong/boilerplate-go/internal/pkg/client/rpc/svc02"
 	"github.com/gw-gong/boilerplate-go/internal/pkg/db/mysql"
+	"github.com/gw-gong/boilerplate-go/internal/pkg/util/provider"
 
 	"github.com/google/wire"
 	"github.com/gw-gong/gwkit-go/grpc/consul"
+	"github.com/gw-gong/gwkit-go/hotcfg"
 )
 
-func InitHttpServer(config *localcfg.Config, netCfg *netcfg.Config) (*HttpServer, func(), error) {
+var ConfigSet = wire.NewSet(
+	localcfg.NewConfig,
+	wire.FieldsOf(
+		new(*localcfg.Config),
+		"ConsulAgentAddr",
+		"ConsulNetCfg",
+		"Biz01",
+		"Biz02",
+		"Test01Client",
+		"Test02Client",
+	),
+	netcfg.NewConfig,
+	wire.FieldsOf(
+		new(*netcfg.Config),
+		"Test01DbManager",
+		"Test02DbManager",
+	),
+	hotcfg.NewHotLoaderManager,
+)
+
+var InfraSet = wire.NewSet(
+	provider.NewGinEngine,
+	mysql.NewTest01DbManager,
+	mysql.NewTest02DbManager,
+	consul.NewConsulClient,
+	svc02.NewTest01Client,
+	svc02.NewTest02Client,
+)
+
+var BizSet = wire.NewSet(
+	biz01.NewBiz01,
+	biz02.NewBiz02,
+)
+
+var RouterSet = wire.NewSet(
+	wire.Struct(new(router.ApiRouter), "*"),
+	wire.Struct(new(router.AppRouter), "*"),
+	wire.Struct(new(router.PortalRouter), "*"),
+	wire.Struct(new(router.PrivateRouter), "*"),
+)
+
+var HttpServerSet = wire.NewSet(
+	wire.Struct(new(HttpServer), "*"),
+)
+
+func InitHttpServer(cfgOption *hotcfg.LocalConfigOption) (*HttpServer, func(), error) {
 	wire.Build(
-		wire.FieldsOf(
-			new(*localcfg.Config),
-			"ConsulAgentAddr",
-			"Biz01",
-			"Biz02",
-			"Test01Client",
-			"Test02Client",
-		),
-		wire.FieldsOf(
-			new(*netcfg.Config),
-			"Test01DbManager",
-			"Test02DbManager",
-		),
-		consul.NewConsulClient,
-		biz01.NewBiz01,
-		biz02.NewBiz02,
-		mysql.NewTest01DbManager,
-		mysql.NewTest02DbManager,
-		svc02.NewTest01Client,
-		svc02.NewTest02Client,
-		wire.Struct(new(router.ApiRouter), "*"),
-		wire.Struct(new(router.AppRouter), "*"),
-		wire.Struct(new(router.PortalRouter), "*"),
-		wire.Struct(new(router.PrivateRouter), "*"),
-		wire.Struct(new(HttpServer), "*"),
+		ConfigSet,
+		InfraSet,
+		BizSet,
+		RouterSet,
+		HttpServerSet,
 	)
 	return nil, nil, nil
 }
