@@ -56,6 +56,9 @@ func (c *Config) LoadConfig() {
 func NewConfig(cfgOption *hotcfg.LocalConfigOption) (config *Config, err error) {
 	config = &Config{}
 	config.BaseConfigCapable, err = hotcfg.NewLocalBaseConfigCapable(cfgOption)
+	if err != nil {
+		return nil, err
+	}
 	config.LoadConfig()
 	return config, err
 }

@@ -3,13 +3,11 @@ package main
 import (
 	"errors"
 	"flag"
-	"path/filepath"
 
 	"github.com/gw-gong/gwkit-go/hotcfg"
 )
 
 const (
-	RootPath           = "../../"
 	defaultCfgFilePath = "config/svc02/localcfg"
 	defaultCfgFileName = "test.yaml"
 )
@@ -27,7 +25,7 @@ func initFlags() (*hotcfg.LocalConfigOption, error) {
 		return nil, errors.New("cfg_name is required")
 	}
 	return &hotcfg.LocalConfigOption{
-		FilePath: filepath.Join(RootPath, *flagCfgFilePath),
+		FilePath: *flagCfgFilePath,
 		FileName: *flagCfgFileName,
 		FileType: "yaml",
 	}, nil
