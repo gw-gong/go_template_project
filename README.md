@@ -14,4 +14,4 @@
 
 ## 📚 详细文档
 
-👉 **[dochub.gxtree.com](http://dochub.gxtree.com)**
+👉 **[dochub.gxtree.com](https://dochub.gxtree.com/docs/boilerplate-go/intro)**
